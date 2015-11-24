@@ -33,6 +33,66 @@
     return true;
 }
 
+- (void)CallAria2Download:(NSString *)downloadAddr fileName:(NSString *)fileName{
+    NSURL* dURL = [NSURL URLWithString:downloadAddr];
+    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSString *cookieStr = @"Cookie: BDUSS=";
+    for (NSHTTPCookie *cookie in [cookieJar cookiesForURL:dURL])
+    {
+        if([[cookie name] isEqualToString:@"BDUSS"]){
+            cookieStr = [cookieStr stringByAppendingString:cookie.value];
+        }
+    }
+    
+    for (NSHTTPCookie *cookie in [cookieJar cookiesForURL:dURL])
+    {
+        if([[cookie name] isEqualToString:@"pcsett"]){
+            cookieStr = [cookieStr stringByAppendingString:@"; pcsett="];
+            cookieStr = [cookieStr stringByAppendingString:cookie.value];
+            
+        }
+    }
+    
+    
+    NSLog(@"BaiduCookie: %@",cookieStr);
+    
+    NSString *path = [NSString stringWithFormat:@"%@%@/",NSHomeDirectory(),@"/Movies/Bilibili/BaiduYun/"];
+    
+    NSString *taskid = [NSString stringWithFormat:@"%ld",time(0)];
+    NSURL* URL = [NSURL URLWithString:@"http://localhost:23336/jsonrpc"];
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"POST";
+    NSDictionary* bodyObject = @{
+                                 @"jsonrpc": @"2.0",
+                                 @"id": taskid,
+                                 @"method": @"aria2.addUri",
+                                 @"params": @[
+                                         @[downloadAddr],
+                                         @{
+                                             @"dir": path,
+                                             @"out": fileName,
+                                             @"header": @[
+                                                     @"User-Agent: netdisk;5.3.4.5;PC;PC-Windows;5.1.2600;WindowsBaiduYunGuanJia",
+                                                     @"Referer: http://pan.baidu.com/disk/home",
+                                                     cookieStr
+                                                     ],
+                                             @"split": @"10",
+                                             @"max-connection-per-server" : @"10",
+                                             @"min-split-size": @"1M"
+                                             },
+                                         ]
+                                 };
+    NSData *json = [NSJSONSerialization dataWithJSONObject:bodyObject options:kNilOptions error:NULL];
+    request.HTTPBody = json;
+    NSURLResponse * response = nil;
+    NSError * error = nil;
+    [NSURLConnection sendSynchronousRequest:request
+                          returningResponse:&response
+                                      error:&error];
+    NSString *jsonstr = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
+    NSLog(@"Request sent, str: %@ ,resp: %@ , err: %@",jsonstr,response,error);
+}
+
 - (void)PreloadBaiduyunPlayAddr:(NSString *)videoAddr{
     NSURL* URL = [NSURL URLWithString:videoAddr];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:URL];
@@ -46,15 +106,26 @@
     }
     
     NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    
+    NSString *cookieStr = @"BDUSS=";
     for (NSHTTPCookie *cookie in [cookieJar cookiesForURL:URL])
     {
         if([[cookie name] isEqualToString:@"BDUSS"]){
-            [request setValue:cookie.value forHTTPHeaderField:@"Cookie"];
-            NSLog(@"BDUSS: %@",cookie.value);
+            cookieStr = [cookieStr stringByAppendingString:cookie.value];
         }
     }
-    [request setValue:@"netdisk;5.3.4;PC;PC-Windows;6.2.9200;WindowsBaiduYunGuanJia" forHTTPHeaderField:@"User-Agent"];
+    
+    for (NSHTTPCookie *cookie in [cookieJar cookiesForURL:URL])
+    {
+        if([[cookie name] isEqualToString:@"pcsett"]){
+            cookieStr = [cookieStr stringByAppendingString:@"; pcsett="];
+            cookieStr = [cookieStr stringByAppendingString:cookie.value];
+            
+        }
+    }
+
+    NSLog(@"BaiduCookie: %@",cookieStr);
+    [request setValue:cookieStr forHTTPHeaderField:@"Cookie"];
+    [request setValue:@"netdisk;5.3.4.5;PC;PC-Windows;5.1.2600;WindowsBaiduYunGuanJia" forHTTPHeaderField:@"User-Agent"];
     [request setValue:@"http://pan.baidu.com/disk/home" forHTTPHeaderField:@"Referer"];
     
     NSLog(@"Start send request");
@@ -102,9 +173,7 @@
 
 - (bool)canHandleEvent:(NSString *)eventName{
     // Eventname format is pluginName-str
-    if([eventName isEqualToString:@"baiduyun-playURL"]){
-        return true;
-    }else if([eventName isEqualToString:@"baiduyun-playInApp"]){
+    if([eventName containsString:@"baiduyun"]){
         return true;
     }
     return false;
@@ -121,6 +190,10 @@
         task.launchPath = @"/usr/bin/open";
         task.arguments = @[@"-a",@"QuickTime Player",eventData];
         [task launch];
+    }else if([eventName isEqualToString:@"baiduyun-downloadURL"]){
+        NSLog(@"Download Data: %@",eventData);
+        NSArray *eventArr = [eventData componentsSeparatedByString:@"_BL_SPLIT_"];
+        [self CallAria2Download:eventArr[0] fileName:eventArr[1]];
     }
     
     return NULL;

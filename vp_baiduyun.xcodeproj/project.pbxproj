@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FD0CCC5A1BAEE47D008FD9BF /* baiduyun.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0CCC591BAEE47D008FD9BF /* baiduyun.m */; settings = {ASSET_TAGS = (); }; };
-		FD0CCC5D1BAEE73D008FD9BF /* Settings.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD0CCC5C1BAEE73D008FD9BF /* Settings.xib */; settings = {ASSET_TAGS = (); }; };
-		FD0CCC5F1BAEE8F0008FD9BF /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = FD0CCC5E1BAEE8F0008FD9BF /* Inject.js */; settings = {ASSET_TAGS = (); }; };
+		FD0CCC5A1BAEE47D008FD9BF /* baiduyun.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0CCC591BAEE47D008FD9BF /* baiduyun.m */; };
+		FD0CCC5D1BAEE73D008FD9BF /* Settings.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD0CCC5C1BAEE73D008FD9BF /* Settings.xib */; };
+		FD0CCC5F1BAEE8F0008FD9BF /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = FD0CCC5E1BAEE8F0008FD9BF /* Inject.js */; };
 		FD50FCBD1BB6A8D000B920E6 /* vp_baiduyun_test.m in Sources */ = {isa = PBXBuildFile; fileRef = FD50FCBC1BB6A8D000B920E6 /* vp_baiduyun_test.m */; };
-		FD50FCC21BB6A8D600B920E6 /* baiduyun.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0CCC591BAEE47D008FD9BF /* baiduyun.m */; settings = {ASSET_TAGS = (); }; };
-		FD50FCC31BB6A8DB00B920E6 /* VPPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD5984921BB5E98F001E0B17 /* VPPlugin.framework */; settings = {ASSET_TAGS = (); }; };
-		FD5984931BB5E98F001E0B17 /* VPPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD5984921BB5E98F001E0B17 /* VPPlugin.framework */; settings = {ASSET_TAGS = (); }; };
+		FD50FCC21BB6A8D600B920E6 /* baiduyun.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0CCC591BAEE47D008FD9BF /* baiduyun.m */; };
+		FD50FCC31BB6A8DB00B920E6 /* VPPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD5984921BB5E98F001E0B17 /* VPPlugin.framework */; };
+		FD5984931BB5E98F001E0B17 /* VPPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD5984921BB5E98F001E0B17 /* VPPlugin.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -281,6 +281,7 @@
 		FD47B9EC1BAECBDE00BAF397 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "TYPCN Offical Software Signing #2";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -299,6 +300,7 @@
 		FD47B9ED1BAECBDE00BAF397 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "TYPCN Offical Software Signing #2";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -374,6 +376,7 @@
 				FD50FCC11BB6A8D000B920E6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
