@@ -7,20 +7,17 @@ window.sendToPlugin = function(data){
 }
 
 window.showToast = function(msg, type) {   
-    var Toast = require("common:widget/toast/toast.js");
-    Toast.obtain.useToast({
-        toastMode: Toast.obtain[type],
-        msg: msg,
-        sticky: false
-    });
+    var Toast = require("disk-system:widget/context/context.js").instanceForSystem;
+    if(type.startsWith("MODE")){
+        type=type.split("_")[1].toLowerCase();
+    }
+    Toast.ui.tip({
+                 mode: type,
+                 msg: msg
+                 });
 };
 
 window.getFileMeta = function(target){
-    var API = (require("common:widget/restApi/restApi.js"),require("common:widget/hash/hash.js"));
-    var path=API.get("path");
-    if(path == null || path =="/"){
-        path="";
-    }
     var request = new XMLHttpRequest();
     request.open('GET', "//pan.baidu.com/api/filemetas?target="+encodeURIComponent("["+JSON.stringify(target)+"]")+"&dlink=1&bdstoken="+yunData.MYBDSTOKEN+"&channel=chunlei&clienttype=0&web=1", true);
     request.onload = function() {
@@ -46,11 +43,6 @@ window.getFileMeta = function(target){
 }
 
 window.getFileMetaDownload = function(target,name){
-    var API = (require("common:widget/restApi/restApi.js"),require("common:widget/hash/hash.js"));
-    var path=API.get("path");
-    if(path == null || path =="/"){
-        path="";
-    }
     var request = new XMLHttpRequest();
     request.open('GET', "//pan.baidu.com/api/filemetas?target="+encodeURIComponent("["+JSON.stringify(target)+"]")+"&dlink=1&bdstoken="+yunData.MYBDSTOKEN+"&channel=chunlei&clienttype=0&web=1", true);
     request.onload = function() {
@@ -79,63 +71,52 @@ setTimeout(function(){
     if(window.bctnloaded){
         return;
     }
-    var btn = document.createElement("span");
-    btn.className = "icon-btn-device";
-    btn.style.float = "none";
-    btn.innerHTML = '<span class="ico"></span><span class="text">播放视频</span>';
-    document.getElementsByClassName("bar")[0].appendChild(btn);
+    var btn = document.createElement("a");
+    btn.className = "g-button";
+    btn.href = "javascript:void(0)";
+    btn.innerHTML = '<span class="g-button-right"><em class="icon icon icon-play-music" title="播放视频"></em><span class="text" style="width: auto;">播放视频</span></span>';
+    document.querySelector('.default-dom .bar div:nth-child(2)').appendChild(btn);
     btn.addEventListener("click",function(){
-         var API = (require("common:widget/restApi/restApi.js"),require("common:widget/hash/hash.js"));
-        var path=API.get("path");
-        var File = require("common:widget/data-center/data-center.js");
-        var Service = require("common:widget/commonService/commonService.js");
-        var Filename = File.get("selectedItemList");
+        var Filename = require("disk-system:widget/context/context.js").instanceForSystem.list.getSelected();
+        var path= require("disk-system:widget/context/context.js").instanceForSystem.list.getCurrentPath();
+        if(path == null){
+            path="/";
+        }else{
+            path+="/";
+        }
         var length = Filename.length;
         if (length == 0) {
             showToast("请先勾选要播放的视频（只能选一个）","MODE_CAUTION");
             return;
         }
-        var path=API.get("path");
+        getFileMeta(Filename[0].path);
+    },true);
+    var btn = document.createElement("a");
+    btn.className = "g-button";
+    btn.href = "javascript:void(0)";
+    btn.innerHTML = '<span class="g-button-right"><em class="icon icon icon-offline-download" title="快速下载"></em><span class="text" style="width: auto;">快速下载</span></span>';
+    document.querySelector('.default-dom .bar div:nth-child(2)').appendChild(btn);
+    btn.addEventListener("click",function(){
+        var Filename = require("disk-system:widget/context/context.js").instanceForSystem.list.getSelected();
+        var path= require("disk-system:widget/context/context.js").instanceForSystem.list.getCurrentPath();
         if(path == null){
             path="/";
         }else{
             path+="/";
         }
-        var name =Filename[0].children().eq(0).children().eq(2).attr("title")||Filename[0].children().eq(1).children().eq(0).attr("title");
-        getFileMeta(path+""+name);
-    },true);
-    var btn = document.createElement("span");
-    btn.className = "icon-btn-device";
-    btn.style.float = "none";
-    btn.innerHTML = '<span class="ico"></span><span class="text">快速下载</span>';
-    document.getElementsByClassName("bar")[0].appendChild(btn);
-    btn.addEventListener("click",function(){
-         var API = (require("common:widget/restApi/restApi.js"),require("common:widget/hash/hash.js"));
-        var path=API.get("path");
-        var File = require("common:widget/data-center/data-center.js");
-        var Service = require("common:widget/commonService/commonService.js");
-        var Filename = File.get("selectedItemList");
-        var length = Filename.length;
         if (length == 0) {
-            showToast("请先勾选要下载的文件）","MODE_CAUTION");
+            showToast("请先勾选要下载的文件","MODE_CAUTION");
             return;
         }
-        var path=API.get("path");
-        if(path == null){
-            path="/";
-        }else{
-            path+="/";
-        }
         for(var i = 0;i < Filename.length;i++){
-            var name =Filename[i].children().eq(0).children().eq(2).attr("title")||Filename[i].children().eq(1).children().eq(0).attr("title");
-            getFileMetaDownload(path+""+name,name);
+            getFileMetaDownload(Filename[i].path,Filename[i].server_filename);
         }
     },true);
-    var btn = document.createElement("span");
-    btn.className = "icon-btn-device";
-    btn.style.float = "none";
-    btn.innerHTML = '<span class="ico"></span><span class="text">下载管理</span>';
-    document.getElementsByClassName("bar")[0].appendChild(btn);
+    var btn = document.createElement("a");
+    btn.className = "g-button";
+    btn.href = "javascript:void(0)";
+    btn.innerHTML = '<span class="g-button-right"><em class="icon icon-device-tool" title="下载管理"></em><span class="text" style="width: auto;">下载管理</span></span>';
+    document.querySelector('.default-dom .bar div:nth-child(2)').appendChild(btn);
     btn.addEventListener("click",function(){
         window.open('http://static.tycdn.net/downloadManager/','_blank');
     },true);
