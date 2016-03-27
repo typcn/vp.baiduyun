@@ -104,6 +104,7 @@ setTimeout(function(){
         }else{
             path+="/";
         }
+        var length = Filename.length;
         if (length == 0) {
             showToast("请先勾选要下载的文件","MODE_CAUTION");
             return;

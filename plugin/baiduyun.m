@@ -110,7 +110,8 @@
     for (NSHTTPCookie *cookie in [cookieJar cookiesForURL:URL])
     {
         if([[cookie name] isEqualToString:@"BDUSS"]){
-            cookieStr = [cookieStr stringByAppendingString:cookie.value];
+            cookieStr =
+            [cookieStr stringByAppendingString:cookie.value];
         }
     }
     
