@@ -72,7 +72,7 @@
                                              @"dir": path,
                                              @"out": fileName,
                                              @"header": @[
-                                                     @"User-Agent: netdisk;5.3.4.5;PC;PC-Windows;5.1.2600;WindowsBaiduYunGuanJia",
+                                                     @"User-Agent: netdisk;Chrome Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36",
                                                      @"Referer: http://pan.baidu.com/disk/home",
                                                      cookieStr
                                                      ],
@@ -126,7 +126,7 @@
 
     NSLog(@"BaiduCookie: %@",cookieStr);
     [request setValue:cookieStr forHTTPHeaderField:@"Cookie"];
-    [request setValue:@"netdisk;5.3.4.5;PC;PC-Windows;5.1.2600;WindowsBaiduYunGuanJia" forHTTPHeaderField:@"User-Agent"];
+    [request setValue:@"netdisk;Chrome Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
     [request setValue:@"http://pan.baidu.com/disk/home" forHTTPHeaderField:@"Referer"];
     
     NSLog(@"Start send request");

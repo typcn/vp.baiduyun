@@ -70,12 +70,12 @@
 		FD47B9E71BAECBDE00BAF397 /* plugin */ = {
 			isa = PBXGroup;
 			children = (
-				FD5984921BB5E98F001E0B17 /* VPPlugin.framework */,
-				FD47B9E81BAECBDE00BAF397 /* Info.plist */,
 				FD0CCC5B1BAEE488008FD9BF /* baiduyun.h */,
 				FD0CCC591BAEE47D008FD9BF /* baiduyun.m */,
-				FD0CCC5C1BAEE73D008FD9BF /* Settings.xib */,
+				FD5984921BB5E98F001E0B17 /* VPPlugin.framework */,
+				FD47B9E81BAECBDE00BAF397 /* Info.plist */,
 				FD0CCC5E1BAEE8F0008FD9BF /* Inject.js */,
+				FD0CCC5C1BAEE73D008FD9BF /* Settings.xib */,
 			);
 			path = plugin;
 			sourceTree = "<group>";
