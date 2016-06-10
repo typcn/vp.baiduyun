@@ -19,7 +19,7 @@ window.showToast = function(msg, type) {
 
 window.getFileMeta = function(target){
     var encode = new Function("return " + yunData.sign2)();
-    var sign = btoa(encode(yunData.sign3, yunData.sign1)) ;
+    var sign = btoa(encode(yunData.sign5, yunData.sign1)) ;
     var request = new XMLHttpRequest();
     request.open('GET', "//pan.baidu.com/api/download?sign=" + encodeURIComponent(sign) + "&timestamp=" + yunData.timestamp +"&fidlist=" + encodeURIComponent("[" + target + "]") + "&bdstoken="+yunData.MYBDSTOKEN+"&type=dlink&channel=chunlei&web=1&app_id=250528&clienttype=0", true);
     request.onload = function() {
@@ -46,7 +46,7 @@ window.getFileMeta = function(target){
 
 window.getFileMetaDownload = function(target,name){
     var encode = new Function("return " + yunData.sign2)();
-    var sign = btoa(encode(yunData.sign3, yunData.sign1)) ;
+    var sign = btoa(encode(yunData.sign5, yunData.sign1)) ;
     var request = new XMLHttpRequest();
     request.open('GET', "//pan.baidu.com/api/download?sign=" + encodeURIComponent(sign) + "&timestamp=" + yunData.timestamp +"&fidlist=" + encodeURIComponent("[" + target + "]") + "&bdstoken="+yunData.MYBDSTOKEN+"&type=dlink&channel=chunlei&web=1&app_id=250528&clienttype=0", true);
     request.onload = function() {
