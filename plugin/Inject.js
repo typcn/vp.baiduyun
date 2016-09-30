@@ -1,4 +1,9 @@
 
+if(location.protocol == 'https:'){
+    document.cookie = 'secu=0';
+    location.href = location.href.replace('https://','http://');
+}
+
 window.sendToPlugin = function(data){
     var request = new XMLHttpRequest();
     request.open('POST', 'http://localhost:23330/pluginCall', true);
